@@ -49,7 +49,7 @@ class App extends Component {
 
   formSubmitHandler = async () => {
     const { accounts, contract, greeting } = this.state;
-    const updatedGreeting = await contract.methods.setGreeting(greeting)
+    const updatedGreeting = await contract.methods.setGreeting(greeting).send({from: accounts[0]});
   }
 
   render() {
