@@ -10,12 +10,15 @@ contract Fundraiser is Ownable {
 
     address payable _beneficiary;
 
+    uint256 private _totalDonations = 0;
+    uint256 private _donationsCount = 0;
+
     constructor(
         string memory name,
-        address payable beneficiary,
         string memory url,
         string memory imageURL,
         string memory bio,
+        address payable beneficiary,
         address custodian) public {
         _name = name;
         _beneficiary = beneficiary;
@@ -44,5 +47,18 @@ contract Fundraiser is Ownable {
 
     function bio() public view returns(string memory) {
         return _bio;
+    }
+
+    function totalDonations() public view returns(uint256) {
+        return _totalDonations;
+    }
+
+    function donate(uint256 conversationFactor, string memory date) public payable {
+        _totalDonations += msg.value;
+        _donationsCount += 1;
+    }
+
+    function donationsCount() public view returns(uint256) {
+        return _donationsCount;
     }
 }
