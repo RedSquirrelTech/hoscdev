@@ -48,5 +48,10 @@ contract("Fundraiser", accounts => {
       const actual = await fundraiser.bio();
       assert.equal(actual, beneficiary.bio, "bios should match");
     });
+
+    it("sets the owner", async () => {
+      const actual = await fundraiser.owner();
+      assert.equal(actual, custodianAddress, "ownership should match custodian");
+    });
   })
 });
