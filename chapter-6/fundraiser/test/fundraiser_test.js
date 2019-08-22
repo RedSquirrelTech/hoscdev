@@ -97,6 +97,45 @@ contract("Fundraiser", accounts => {
       assert.equal(myDonations.conversionFactors[0], conversionRate);
     });
   });
+
+  describe("withdraw funds", async () => {
+    let currentBalance
+    
+    beforeEach(async () => {
+      fundraiser = await createFundraiser(beneficiary, custodianAddress);
+      const date = new Date().valueOf();
+      await fundraiser.donate(18460, date, {from: accounts[2], value: web3.utils.toWei("0.01")});
+      currentBalance = await web3.eth.getBalance(beneficiary.ethereumAccount);
+    });
+
+    describe ("when requested from custodian account", () => {
+      it("sends funds to the beneficiary", async () => {
+        await fundraiser.withdraw({from: custodianAddress});
+        const updatedBalance = web3.eth.getBalance(beneficiary.ethereumAccount);
+        assert.notEqual(currentBalance, updatedBalance)
+      });
+
+      it("emits LogWithdraw event", async () => {
+        const transaction = await fundraiser.withdraw({from: custodianAddress});
+        const expectedEvent = "LogWithdraw";
+        const actualEvent = transaction.logs[0].event;
+        assert.equal(actualEvent, expectedEvent, "events should match");
+      });
+    });
+
+    describe ("when requested from any other account", () => {
+      it("prevents withdrawing funds", async () => {
+        try {
+          await fundraiser.withdraw({from: accounts[3]});
+        } catch(err) {
+          const expectedError = "Ownable: caller is not the owner";
+          assert.equal(err.reason, expectedError, "only the owner can call this function");
+          return;
+        }
+        assert(false, "should not be allowed to withdraw");
+      });
+    });
+  });
 });
 
 async function createFundraiser(beneficiary, custodian) {

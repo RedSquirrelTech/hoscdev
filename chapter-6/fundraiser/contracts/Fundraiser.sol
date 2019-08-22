@@ -21,6 +21,8 @@ contract Fundraiser is Ownable {
     event LogDonationReceived(address from, uint256 value, uint256 date);
     mapping(address => Donation[]) private _donations;
 
+    event LogWithdraw(uint amount);
+
     constructor(
         string memory name,
         string memory url,
@@ -95,5 +97,11 @@ contract Fundraiser is Ownable {
             conversionFactors[i] = _donations[msg.sender][i].conversionFactor;
         }
         return (values, dates, conversionFactors);
+    }
+
+    function withdraw() public onlyOwner {
+        uint256 balance = address(this).balance;
+        _beneficiary.transfer(balance);
+        emit LogWithdraw(balance);
     }
 }
