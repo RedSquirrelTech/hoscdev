@@ -76,8 +76,17 @@ contract("Fundraiser", accounts => {
 
       assert.equal(1, difference, "donations count should change by 1");
     });
-    it ("emits donation received event");
-    it ("includes new donation in list for donor");
+
+    it ("emits donation received event", async () => {
+      const transaction = await fundraiser.donate(
+        conversionRate,
+        date,
+        {from: donor, value: donoationAmount}
+      );
+      const expectedEvent = "LogDonationReceived";
+      const actualEvent = transaction.logs[0].event;
+      assert.equal(actualEvent, expectedEvent, "events should match");
+    });
   });
 });
 
