@@ -50,7 +50,7 @@ contract("Fundraiser", accounts => {
   describe("making a donation", () => {
     const donoationAmount = web3.utils.toWei('0.1');
     const conversionRate = 18460;
-    const date = new Date().toISOString();
+    const date = new Date().valueOf();
     const donor = accounts[2];
 
     beforeEach(async () => {
@@ -86,6 +86,15 @@ contract("Fundraiser", accounts => {
       const expectedEvent = "LogDonationReceived";
       const actualEvent = transaction.logs[0].event;
       assert.equal(actualEvent, expectedEvent, "events should match");
+    });
+
+    it("returns my donations", async () => {
+      await fundraiser.donate(conversionRate, date, {from: donor, value: donoationAmount});
+      const myDonations = await fundraiser.myDonations({from: donor});
+
+      assert.equal(myDonations.values[0], donoationAmount)
+      assert.equal(myDonations.dates[0], date)
+      assert.equal(myDonations.conversionFactors[0], conversionRate);
     });
   });
 });

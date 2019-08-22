@@ -15,10 +15,10 @@ contract Fundraiser is Ownable {
 
     struct Donation {
         uint256 value;
-        string date;
+        uint256 date;
         uint256 conversionFactor;
     }
-    event LogDonationReceived(address from, uint256 value, string date);
+    event LogDonationReceived(address from, uint256 value, uint256 date);
     mapping(address => Donation[]) private _donations;
 
     constructor(
@@ -61,7 +61,7 @@ contract Fundraiser is Ownable {
         return _totalDonations;
     }
 
-    function donate(uint256 conversionFactor, string memory date) public payable {
+    function donate(uint256 conversionFactor, uint256 date) public payable {
         Donation memory donation = Donation({
             value: msg.value,
             conversionFactor: conversionFactor,
@@ -77,5 +77,23 @@ contract Fundraiser is Ownable {
 
     function donationsCount() public view returns(uint256) {
         return _donationsCount;
+    }
+
+    function myDonations() public view returns(
+        uint256[] memory values,
+        uint256[] memory dates,
+        uint256[] memory conversionFactors)
+    {
+        uint256 count = _donations[msg.sender].length;
+        values = new uint256[](count);
+        dates = new uint256[](count);
+        conversionFactors = new uint256[](count);
+
+        for(uint256 i = 0; i < count; i++) {
+            values[i] = _donations[msg.sender][i].value;
+            dates[i] = _donations[msg.sender][i].date;
+            conversionFactors[i] = _donations[msg.sender][i].conversionFactor;
+        }
+        return (values, dates, conversionFactors);
     }
 }
