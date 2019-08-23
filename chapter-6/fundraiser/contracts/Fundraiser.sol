@@ -31,10 +31,10 @@ contract Fundraiser is Ownable {
         address payable beneficiary,
         address custodian) public {
         _name = name;
-        _beneficiary = beneficiary;
         _url = url;
         _imageURL = imageURL;
         _bio= bio;
+        _beneficiary = beneficiary;
 
         _transferOwnership(custodian);
     }

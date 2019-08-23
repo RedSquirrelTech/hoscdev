@@ -1,14 +1,15 @@
 const FundraiserContract = artifacts.require("Fundraiser");
-  async function createFundraiser(beneficiary, custodian) {
-    return await FundraiserContract.new(
-      beneficiary.name,
-      beneficiary.websiteURL,
-      beneficiary.imageURL,
-      beneficiary.bio,
-      beneficiary.ethereumAccount,
-      custodian
-    );      
-  }
+
+async function createFundraiser(beneficiary, custodian) {
+  return await FundraiserContract.new(
+    beneficiary.name,
+    beneficiary.websiteURL,
+    beneficiary.imageURL,
+    beneficiary.bio,
+    beneficiary.ethereumAccount,
+    custodian
+  );      
+}
 
 contract("Fundraiser", accounts => {
   let fundraiser;
