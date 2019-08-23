@@ -63,18 +63,18 @@ contract Fundraiser is Ownable {
         return _totalDonations;
     }
 
-    function donate(uint256 conversionFactor, uint256 date) public payable {
+    function donate(uint256 conversionFactor) public payable {
         Donation memory donation = Donation({
             value: msg.value,
             conversionFactor: conversionFactor,
-            date: date
+            date: now
         });
 
         _donations[msg.sender].push(donation);
         _totalDonations += msg.value;
         _donationsCount += 1;
 
-        emit LogDonationReceived(msg.sender, msg.value, date);
+        emit LogDonationReceived(msg.sender, msg.value, donation.date);
     }
 
     function donationsCount() public view returns(uint256) {

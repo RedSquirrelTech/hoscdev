@@ -59,9 +59,8 @@ contract("Fundraiser", accounts => {
   })
 
   describe("making a donation", () => {
-    const donoationAmount = web3.utils.toWei('0.1');
+    const donationAmount = web3.utils.toWei('0.1');
     const conversionRate = 18460;
-    const date = new Date().valueOf();
     const donor = accounts[2];
 
     beforeEach(async () => {
@@ -70,17 +69,17 @@ contract("Fundraiser", accounts => {
 
     it ("increases total donations amount", async () => {
       const currentValue = await fundraiser.totalDonations();
-      await fundraiser.donate(conversionRate, date, {from: donor, value: donoationAmount});
+      await fundraiser.donate(conversionRate, {from: donor, value: donationAmount});
       const updatedValue = await fundraiser.totalDonations();
 
       const difference = updatedValue - currentValue;
 
-      assert.equal(donoationAmount, difference, "amount should change by donated amount");
+      assert.equal(donationAmount, difference, "amount should change by donated amount");
     });
 
     it ("increases donations count", async () => {
       const currentDonationsCount = await fundraiser.donationsCount();
-      await fundraiser.donate(conversionRate, date, {from: donor, value: donoationAmount});
+      await fundraiser.donate(conversionRate, {from: donor, value: donationAmount});
       const updatedDonationsCount = await fundraiser.donationsCount();
 
       const difference = updatedDonationsCount - currentDonationsCount;
@@ -91,8 +90,7 @@ contract("Fundraiser", accounts => {
     it ("emits donation received event", async () => {
       const transaction = await fundraiser.donate(
         conversionRate,
-        date,
-        {from: donor, value: donoationAmount}
+        {from: donor, value: donationAmount}
       );
       const expectedEvent = "LogDonationReceived";
       const actualEvent = transaction.logs[0].event;
@@ -100,11 +98,10 @@ contract("Fundraiser", accounts => {
     });
 
     it("returns my donations", async () => {
-      await fundraiser.donate(conversionRate, date, {from: donor, value: donoationAmount});
+      await fundraiser.donate(conversionRate, {from: donor, value: donationAmount});
       const myDonations = await fundraiser.myDonations({from: donor});
 
-      assert.equal(myDonations.values[0], donoationAmount)
-      assert.equal(myDonations.dates[0], date)
+      assert.equal(myDonations.values[0], donationAmount)
       assert.equal(myDonations.conversionFactors[0], conversionRate);
     });
   });
@@ -114,8 +111,7 @@ contract("Fundraiser", accounts => {
     
     beforeEach(async () => {
       fundraiser = await createFundraiser(beneficiary, custodianAddress);
-      const date = new Date().valueOf();
-      await fundraiser.donate(18460, date, {from: accounts[2], value: web3.utils.toWei("0.01")});
+      await fundraiser.donate(18460, {from: accounts[2], value: web3.utils.toWei("0.01")});
       currentBalance = await web3.eth.getBalance(beneficiary.ethereumAccount);
     });
 
