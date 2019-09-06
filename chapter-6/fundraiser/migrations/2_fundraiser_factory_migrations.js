@@ -1,5 +1,5 @@
-const FactoryContract = artifacts.require("Factory");
+const FundraiserFactoryContract = artifacts.require("FundraiserFactory");
 
 module.exports = function(deployer) {
-  deployer.deploy(FactoryContract);
+  deployer.deploy(FundraiserFactoryContract);
 }
