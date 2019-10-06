@@ -1,9 +1,11 @@
 const GreeterContract = artifacts.require("Greeter");
 
 contract("Greeter", (accounts) => {
-  it("has been deployed successfully", async () => {
-    const greeter = await GreeterContract.deployed();
-    assert(greeter, "contract has been deployed");
+  describe("deployment", () => {
+    it("has been deployed successfully", async () => {
+      const greeter = await GreeterContract.deployed();
+      assert(greeter, "contract failed to deploy");
+    });
   });
 
   describe("greet()", () => {
@@ -44,7 +46,7 @@ contract("Greeter: update greeting", (accounts) => {
         await greeter.setGreeting(expected);
         const actual = await greeter.greet();
 
-        assert.equal(actual, expected, "greeting updated");
+        assert.equal(actual, expected, "greeting was not updated");
       });
     });
 
