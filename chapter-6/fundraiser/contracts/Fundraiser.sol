@@ -1,7 +1,13 @@
 pragma solidity >0.4.23 <0.7.0;
 
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
-contract Fundraiser {
+contract Fundraiser is Ownable {
+    struct Donation {
+        uint256 value;
+        uint256 date;
+    }
+    mapping(address => Donation[]) private _donations;
 
     string public name;
     string public url;
@@ -9,7 +15,7 @@ contract Fundraiser {
     string public description;
 
     address payable public beneficiary;
-    address public custodian;
+    address private _owner;
 
     constructor(
         string memory _name,
@@ -26,7 +32,22 @@ contract Fundraiser {
         imageURL = _imageURL;
         description = _description;
         beneficiary = _beneficiary;
-        custodian = _custodian;
+        _owner = _custodian;
     }
 
+    function setBeneficiary(address payable _beneficiary) public onlyOwner {
+        beneficiary = _beneficiary;
+    }
+
+    function myDonationsCount() public view returns(uint256) {
+        return _donations[msg.sender].length;
+    }
+
+    function donate() public payable {
+        Donation memory donation = Donation({
+            value: msg.value,
+            date: block.timestamp
+        });
+        _donations[msg.sender].push(donation);
+    }
 }
