@@ -131,8 +131,6 @@ const FundraiserCard = (props) => {
       const isUser = accounts[0]
       const isOwner = await instance.methods.owner().call()
 
-      debugger
-
       if (isOwner === accounts[0]) {
         setIsOwner(true)
       }
@@ -213,7 +211,7 @@ const FundraiserCard = (props) => {
       from: accounts[0],
     })
 
-    alert(`Fundraiser Beneficiary`)
+    alert(`Fundraiser Beneficiary Changed`)
   }
 
   return (
