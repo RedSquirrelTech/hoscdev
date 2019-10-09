@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import getWeb3 from "./utils/getWeb3";
-import FactoryContract from "./contracts/Factory.json";
+import FactoryContract from "./contracts/FundraiserFactory.json";
 import Web3 from 'web3'
 
 const useStyles = makeStyles(theme => ({
@@ -63,21 +63,24 @@ const [ website, setFundraiserWebsite ] = useState(null)
 const [ description, setFundraiserDescription ] = useState(null)
 const [ image, setImage ] = useState(null)
 const [ address, setAddress ] = useState(null)
-const [ custodian, setCustodian ] = useState(null)
 const [ contract, setContract] = useState(null)
 const [ accounts, setAccounts ] = useState(null)
 
 const handleSubmit = async () => {
   const imageURL = image
-  const bio = description
+  const url = website
   const beneficiary = address
+  const currentUser = await web3.currentProvider.selectedAddress
+  var test = accounts[0]
+
+  debugger
+
   const transaction = await contract.methods.createFundraiser(
     name,
-    website,
+    url,
     imageURL,
-    bio,
-    beneficiary,
-    custodian
+    description,
+    beneficiary
   ).send({ from: accounts[0] })
 
   alert('Successfully created fundraiser')
@@ -138,17 +141,6 @@ const handleSubmit = async () => {
         placeholder="Fundraiser Ethereum Address"
         margin="normal"
         onChange={(e) => setAddress(e.target.value)}
-        variant="outlined"
-        inputProps={{ 'aria-label': 'bare' }}
-      />
-
-      <label>Custodian</label>
-      <TextField
-        id="outlined-bare"
-        className={classes.textField}
-        placeholder="Fundraiser Custodian"
-        margin="normal"
-        onChange={(e) => setCustodian(e.target.value)}
         variant="outlined"
         inputProps={{ 'aria-label': 'bare' }}
       />

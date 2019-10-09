@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import FundraiserCard from './FundraiserCard'
 import getWeb3 from "./utils/getWeb3";
-import FactoryContract from "./contracts/Factory.json";
+import FactoryContract from "./contracts/FundraiserFactory.json";
 import Web3 from 'web3'
 
 const useStyles = makeStyles(theme => ({
@@ -17,7 +17,6 @@ const useStyles = makeStyles(theme => ({
 
 
 const Home = () => {
-  const classes = useStyles();
   const [ contract, setContract] = useState(null)
   const [ accounts, setAccounts ] = useState(null)
   const [ funds, setFunds ] = useState([])
@@ -39,7 +38,8 @@ const Home = () => {
       setContract(instance)
       setAccounts(accounts)
 
-      const funds = await instance.methods.fundraisers().call()
+      const funds = await instance.methods.fundraisers(10, 0).call()
+
       setFunds(funds)
     }
     catch(error) {

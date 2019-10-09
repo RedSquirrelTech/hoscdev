@@ -71,7 +71,7 @@ const FundraiserCard = (props) => {
   const [ accounts, setAccounts ] = useState(null)
   const [ fund, setFundraiser ] = useState(null)
   const [ fundName, setFundname ] = useState(null)
-  const [ bio, setBio ] = useState(null)
+  const [ description, setDescription ] = useState(null)
   const [ totalDonations, setTotalDonations ] = useState(null)
   const [ imageURL, setImageURL ] = useState(null)
   const [ url, setURL ] = useState(null)
@@ -80,6 +80,7 @@ const FundraiserCard = (props) => {
   const [ exchangeRate, setExchangeRate ] = useState(null)
   const [ userDonations, setUserDonations ] = useState(null)
   const [ isOwner, setIsOwner ] = useState(false)
+  const [ beneficiary, setNewBeneficiary ] = useState('')
 
   const ethAmount = (donationAmount / exchangeRate || 0).toFixed(4)
 
@@ -107,7 +108,7 @@ const FundraiserCard = (props) => {
       setAccounts(accounts)
 
       const name = await instance.methods.name().call()
-      const bio = await instance.methods.bio().call()
+      const description = await instance.methods.description().call()
       const totalDonations = await instance.methods.totalDonations().call()
       const imageURL = await instance.methods.imageURL().call()
       const url = await instance.methods.url().call()
@@ -119,7 +120,7 @@ const FundraiserCard = (props) => {
 
       setTotalDonations(dollarDonationAmount.toFixed(2))
       setFundname(name)
-      setBio(bio)
+      setDescription(description)
       setImageURL(imageURL)
       setURL(url)
 
@@ -129,7 +130,10 @@ const FundraiserCard = (props) => {
 
       const isUser = accounts[0]
       const isOwner = await instance.methods.owner().call()
-      if (isOwner === accounts[[0]]) {
+
+      debugger
+
+      if (isOwner === accounts[0]) {
         setIsOwner(true)
       }
     }
@@ -155,21 +159,16 @@ const FundraiserCard = (props) => {
 
   const submitFunds = async () => {
     const fundraisercontract = contract
-    const conversionRate = 18460;
     const ethRate = exchangeRate
     const ethTotal = donationAmount / ethRate
     const donation = web3.utils.toWei(ethTotal.toString())
 
-    await contract.methods.donate(conversionRate).send({
+    await contract.methods.donate().send({
       from: accounts[0],
       value: donation,
       gas: 650000
     })
     setOpen(false);
-  }
-
-  const showReceipt = (amount, date) => {
-
   }
 
   const renderDonationsList = () => {
@@ -209,6 +208,14 @@ const FundraiserCard = (props) => {
     alert('Funds Withdrawn!')
   }
 
+  const setBeneficiary = async () => {
+    await contract.methods.setBeneficiary(beneficiary).send({
+      from: accounts[0],
+    })
+
+    alert(`Fundraiser Beneficiary`)
+  }
+
   return (
     <div className="fundraiser-card-container">
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -218,7 +225,7 @@ const FundraiserCard = (props) => {
       <DialogContent>
         <DialogContentText>
           <img src={imageURL} width='200px' height='200px' />
-          <p>{bio}</p>
+          <p>{description}</p>
 
           <div className="donation-input-container">
             <FormControl className={classes.formControl}>
@@ -242,6 +249,24 @@ const FundraiserCard = (props) => {
             <h3>My donations</h3>
             {renderDonationsList()}
           </div>
+
+
+          {isOwner &&
+            <div>
+              <FormControl className={classes.formControl}>
+                Beneficiary:
+                <Input
+                  value={beneficiary}
+                  onChange={(e) => setNewBeneficiary(e.target.value)}
+                  placeholder="Set Beneficiary"
+                 />
+              </FormControl>
+
+              <Button variant="contained" style={{ marginTop: 20 }} color="primary" onClick={setBeneficiary}>
+                Set Beneficiary
+              </Button>
+            </div>
+          }
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -272,7 +297,7 @@ const FundraiserCard = (props) => {
             {fundName}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            <p>{bio}</p>
+            <p>{description}</p>
             <p>Total Donations: ${totalDonations}</p>
           </Typography>
         </CardContent>

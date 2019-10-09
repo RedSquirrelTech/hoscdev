@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect } from "react";
-import FactoryContract from "./contracts/Factory.json";
+import FactoryContract from "./contracts/FundraiserFactory.json";
 import getWeb3 from "./utils/getWeb3";
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 
 import NewFundraiser from './NewFundraiser'
 import Home from './Home'
@@ -16,7 +16,6 @@ import "./App.css";
 
 const App = () => {
   const [state, setState] = useState({web3: null, accounts: null, contract: null});
-  const [storageValue, setStorageValue] = useState(0);
 
   useEffect(() => {
     const init = async() => {
@@ -54,8 +53,6 @@ const App = () => {
       flexGrow: 1,
     },
   });
-
-  const classes = useStyles();
 
   const runExample = async () => {
     const { accounts, contract } = state;

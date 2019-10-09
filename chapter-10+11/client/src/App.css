@@ -89,7 +89,11 @@ body {
   }
 }
 
-
+.owner-actions-container {
+  button {
+    margin-left: 20px;
+  }
+}
 
 .nav-link {
   color: inherit;
