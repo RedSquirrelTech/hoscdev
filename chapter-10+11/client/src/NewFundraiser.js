@@ -71,7 +71,6 @@ const handleSubmit = async () => {
   const url = website
   const beneficiary = address
   const currentUser = await web3.currentProvider.selectedAddress
-  var test = accounts[0]
 
   const transaction = await contract.methods.createFundraiser(
     name,
