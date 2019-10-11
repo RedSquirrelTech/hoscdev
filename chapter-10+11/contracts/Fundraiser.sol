@@ -21,7 +21,6 @@ contract Fundraiser is Ownable {
     string public description;
 
     address payable public beneficiary;
-    address private _owner;
 
     uint256 public totalDonations;
     uint256 public donationsCount;
@@ -41,7 +40,7 @@ contract Fundraiser is Ownable {
         imageURL = _imageURL;
         description = _description;
         beneficiary = _beneficiary;
-        _owner = _custodian;
+        _transferOwnership(_custodian);
     }
 
     function setBeneficiary(address payable _beneficiary) public onlyOwner {
