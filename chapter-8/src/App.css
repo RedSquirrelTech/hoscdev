@@ -1,0 +1,105 @@
+body {
+  margin: 0 !important;
+}
+
+.App {
+  text-align: center;
+}
+
+.donation-input-container {
+  display: flex;
+}
+
+.withdrawal-button {
+  margin-left: 10px;
+}
+
+.receipt-header {
+  border-bottom: 1px solid gray;
+}
+
+.receipt-container {
+  text-align: center;
+}
+
+.receipt-info {
+  display: flex;
+  padding: 50px;
+  justify-content: space-between;
+}
+
+.donation-receipt-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.main-container {
+  margin: 20px;
+}
+
+.donation-list {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.fundraiser-card-container {
+  display: inline-flex;
+  width: 250px;
+  height: 250px;
+  margin: 20px;
+}
+
+.MuiTextField-root {
+  display: block !important;
+}
+
+.MuiInputBase-root {
+  width: 300px !important;
+  margin-left: 3px;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+.nav-link {
+  color: inherit;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.nav-link:hover,
+.nav-link:active,
+.nav-link:visited {
+  color: black;
+  text-decoration: none;
+}
