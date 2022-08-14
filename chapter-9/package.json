@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.3.1",
-    "@openzeppelin/contracts": "^2.3.0",
+    "@openzeppelin/contracts": "^4.7.2",
     "bootstrap": "^4.3.1",
     "cryptocompare": "^1.0.0",
     "get-eth-price": "^1.0.0",
